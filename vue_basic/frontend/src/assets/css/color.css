@@ -1,0 +1,16 @@
+@charset "utf-8";
+:root {
+  --graph-border: rgba(0, 0, 0, 0.06);
+  --gray: #c4c5cc;
+  --primary-blue: #006ebb;
+  --primary-red: #e50113;
+  --primary-black: #1b1b1b;
+  --default-bg: #f7f7f7;
+  --default-eee: #efefef;
+  --default-black: #1b1b1b;
+  --text-999: #999;
+  --text-666: #666;
+  --graph-border-10: rgba(0, 0, 0, 0.1);
+  --text-333: #333;
+  --bbb: #bbb;
+}
