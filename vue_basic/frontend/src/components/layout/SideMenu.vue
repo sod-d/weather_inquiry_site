@@ -9,24 +9,24 @@
       <div ref="menu1">
         <div class="side-menu-list">
           <p>소영</p>
-          <button @click="linkMenu('/board-list')">날씨조회</button>
+          <button @click="goPage('/weather')">날씨조회</button>
         </div>
         <div class="side-menu-list">
           <p>동창</p>
-          <button @click="linkMenu('/survey')">기상특보</button>
-          <button @click="linkMenu('/survey')">바다예보</button>
+          <button @click="goPage('/sky')">기상특보</button>
+          <button @click="goPage('/sea')">바다예보</button>
         </div>
         <div class="side-menu-list">
           <p>현주</p>
-          <button @click="linkMenu('/survey')">관심지역 설정</button>
+          <button @click="goPage('/location')">관심지역 설정</button>
         </div>
         <div class="side-menu-list">
           <p>정아</p>
-          <button @click="linkMenu('/survey')">전국 온도/강수</button>
+          <button @click="goPage('/tempe')">전국 온도/강수</button>
         </div>
         <div class="side-menu-list">
           <p>정동</p>
-          <button @click="linkMenu('/survey')">산악날씨</button>
+          <button @click="goPage('/mountain')">산악날씨</button>
         </div>
       </div>
     </div>
@@ -52,7 +52,7 @@ export default {
   watch: {
   },
   mounted() {
-    
+    console.log('side menu');
   },
   methods: {
     closeSideMenu(){
@@ -61,6 +61,11 @@ export default {
       setTimeout(()=>{
         this.$emit('close');
       },300);
+    },
+
+    goPage(link){
+      this.closeSideMenu();
+      this.$router.push(link);
     }
   },
 };

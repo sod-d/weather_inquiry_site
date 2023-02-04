@@ -8,6 +8,12 @@ const Login = () => import(/* webpackChunkName: "chunk/model" */ "../views/Login
 const PopTest = () => import(/* webpackChunkName: "chunk/model" */'../views/Modal/Popup');
 
 const SamplePage = () => import('../views/DC/SamplePage.vue');
+const Weather = () => import('../views/SY/Weather.vue');
+const Sky = () => import('../views/DC/SkyWeather.vue');
+const Sea = () => import('../views/DC/SeaWeather.vue');
+const Location = () => import('../views/HJ/Location.vue');
+const Temperature = () => import('../views/JA/Temperature.vue');
+const Mountain = () => import('../views/JD/MountainWeather.vue');
 
 
 
@@ -33,10 +39,65 @@ const router = new Router({
         className: "dashboard",
       },
     },
+    
     {
       path: "/sample",
       name: "sample page",
       component: SamplePage,
+      meta: {
+        layout: Define.LAYOUT_TYPE.DEFAULT,
+        className: "dashboard",
+      },
+    },
+    {
+      path: "/weather",
+      name: "날씨조회",
+      component: Weather,
+      meta: {
+        layout: Define.LAYOUT_TYPE.DEFAULT,
+        className: "dashboard",
+      },
+    },
+    {
+      path: "/sky",
+      name: "기상특보",
+      component: Sky,
+      meta: {
+        layout: Define.LAYOUT_TYPE.DEFAULT,
+        className: "dashboard",
+      },
+    },
+    {
+      path: "/sea",
+      name: "바다예보",
+      component: Sea,
+      meta: {
+        layout: Define.LAYOUT_TYPE.DEFAULT,
+        className: "dashboard",
+      },
+    },
+    {
+      path: "/location",
+      name: "관심지역 설정",
+      component: Location,
+      meta: {
+        layout: Define.LAYOUT_TYPE.DEFAULT,
+        className: "dashboard",
+      },
+    },
+    {
+      path: "/tempe",
+      name: "전국 온도/강수",
+      component: Temperature,
+      meta: {
+        layout: Define.LAYOUT_TYPE.DEFAULT,
+        className: "dashboard",
+      },
+    },
+    {
+      path: "/mountain",
+      name: "산악날씨",
+      component: Mountain,
       meta: {
         layout: Define.LAYOUT_TYPE.DEFAULT,
         className: "dashboard",
