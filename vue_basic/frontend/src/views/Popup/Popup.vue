@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import PopAlert from "@/views/Modal/PopAlert";
-import PopConfirm from "@/views/Modal/PopConfirm";
+import PopAlert from "@/views/Popup/PopAlert";
+import PopConfirm from "@/views/Popup/PopConfirm";
 
 export default {
   components: {
@@ -28,6 +28,9 @@ export default {
       PopConfirmActive: false,
       popPickerActive : false
     };
+  },
+  mounted(){
+    console.log('popup mounted');
   },
   methods: {
     popClose(rst){

@@ -3,6 +3,7 @@ import App from "./App.vue";
 import store from "./store";
 import router from "./router";
 import "./assets/css/sideMenu.css";
+import './assets/css/popup.css';
 
 Vue.config.productionTip = false;
 

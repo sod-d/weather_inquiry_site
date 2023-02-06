@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import PopAlert from "@/views/Modal/PopAlert";
-import PopConfirm from "@/views/Modal/PopConfirm";
-import PopList from "@/views/Modal/PopList";
+import PopAlert from "@/views/Popup/PopAlert";
+import PopConfirm from "@/views/Popup/PopConfirm";
+import PopList from "@/views/Popup/PopList";
 import {mapState} from "vuex";
 import EventBus from "@/common/EventBus";
 
@@ -24,6 +24,7 @@ export default {
 
     EventBus.$off('showAlert');
     EventBus.$on("showAlert", (param)=>{
+      console.log('alert common popup');
       this.text = this.isHtml(param.text) ? param.text : `<p>${param.text}</p>`;
       this.popNoHead = param.isNoHead || false;
       this.title = param.title || '알림';

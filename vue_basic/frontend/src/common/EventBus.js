@@ -4,7 +4,8 @@ const EventBus = new Vue();
 
 export default EventBus;
 
-export function $alert(param) {
+export function $popAlert(param) {
+    console.log('alert eventBus');
     if(_.isString(param)) param = { text: param };
     EventBus.$emit('showAlert', param);
     EventBus.$off('CBAlert');

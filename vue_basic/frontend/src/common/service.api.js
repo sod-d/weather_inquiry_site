@@ -6,7 +6,7 @@ import axios from "axios";
 import store from "@/store";
 import router from "@/router";
 import Define from "@/common/define";
-import { $alert } from "@/common/EventBus";
+import { $popAlert } from "@/common/EventBus";
 
 let configSet = {};
 let fetchDataErrorCodes = []
@@ -92,7 +92,7 @@ service.interceptors.response.use(
       // loadingClose();
     }
 
-    await $alert(message);
+    await $popAlert(message);
 
     return Promise.reject(data);
   }

@@ -1,11 +1,11 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Define from "@/common/define";
+import EventBus from "@/common/EventBus";
 
 const AlertTest = () => import(/* webpackChunkName: "chunk/model" */'../views/AlertTest');
 const ConfirmTest = () => import(/* webpackChunkName: "chunk/model" */'../views/ConfirmTest');
-const Login = () => import(/* webpackChunkName: "chunk/model" */ "../views/Login/Login");
-const PopTest = () => import(/* webpackChunkName: "chunk/model" */'../views/Modal/Popup');
+const PopTest = () => import(/* webpackChunkName: "chunk/model" */'../views/Popup/Popup');
 
 const SamplePage = () => import('../views/DC/SamplePage.vue');
 const Weather = () => import('../views/SY/Weather.vue');
@@ -29,15 +29,6 @@ const router = new Router({
     {
       path: "/",
       redirect: "/sample",
-    },
-    {
-      path: "/login",
-      name: "login",
-      component: Login,
-      meta: {
-        layout: Define.LAYOUT_TYPE.DEFAULT,
-        className: "dashboard",
-      },
     },
     
     {
@@ -105,5 +96,22 @@ const router = new Router({
     },
   ],
 });
+
+// 전역 네비게이션
+const anonymous_pages = ['/', '/login', '/home', '/dashboard', '/landing'];
+export const popupAutoClose = (closeEvt, closeCbEvt ) => {
+  return new Promise((resolve, reject) => {
+    if(!EventBus._events[closeEvt]) resolve();
+    EventBus.$off(closeCbEvt);
+    EventBus.$on(closeCbEvt, (canMove) => {
+      // 닫힌 팝업이 없이 이동해도 괜찮다면 canMove = true
+      // 닫힌 팝업이 존재하여 이동을 멈춰야한다면 canMove = false
+      EventBus.$off(closeCbEvt)
+      canMove ? resolve() : reject();
+      })
+    EventBus.$emit(closeEvt);
+  })
+
+}
 
 export default router;
