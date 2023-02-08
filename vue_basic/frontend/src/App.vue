@@ -18,9 +18,6 @@ export default {
       scrollTop : 0,
     };
   },
-  mounted(){
-    console.log('App.vue the layout');
-  },
   methods : {
     changeHeader(scroll){
       this.scrollTop = scroll;
