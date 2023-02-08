@@ -1,5 +1,5 @@
 <template>
-	<div>날씨조회</div>
+	<div>날씨조회 테스트</div>
 </template>
 
 <script>
