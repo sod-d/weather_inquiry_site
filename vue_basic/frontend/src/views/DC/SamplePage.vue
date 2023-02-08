@@ -2,7 +2,7 @@
   <div>
 		<h1>Sample Page</h1>
     <button @click="apiTest()">API 통신 테스트</button><br/><br/>
-    <button @click="callPopup()">Alert 팝업 호출</button><br/><br/>
+    <button @click="callAlert()">Alert 팝업 호출</button><br/><br/>
     <button @click="callConfirm()">Confirm 팝업 호출</button>
   </div>
    
@@ -39,7 +39,7 @@ export default {
       console.log('대기');
     },
 
-    async callConfirm(){
+    async callPopup2(){
       let isOK = this.$confirm("confirm Popup");
 
       console.log(isOK);
