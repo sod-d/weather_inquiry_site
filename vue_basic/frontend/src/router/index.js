@@ -2,9 +2,6 @@ import Vue from "vue";
 import Router from "vue-router";
 import Define from "@/common/define";
 import EventBus from "@/common/EventBus";
-
-const AlertTest = () => import(/* webpackChunkName: "chunk/model" */'../views/AlertTest');
-const ConfirmTest = () => import(/* webpackChunkName: "chunk/model" */'../views/ConfirmTest');
 const PopTest = () => import(/* webpackChunkName: "chunk/model" */'../views/Popup/Popup');
 
 const SamplePage = () => import('../views/DC/SamplePage.vue');
@@ -23,9 +20,6 @@ const router = new Router({
   mode: "hash",
   // base: '/', // only history mode
   routes: [
-    { path: "/alert-test", name: "alert 테스트", component: AlertTest },
-    { path: "/confirm-test", name: "confirm 테스트", component: ConfirmTest },
-
     {
       path: "/",
       redirect: "/sample",

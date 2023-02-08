@@ -38,6 +38,7 @@ header + h1{display:block;padding:1.2rem 2rem 1.6rem 2rem;color:var(--default-bl
 .side-menu-title{position:absolute;left:1rem;top:1.3rem;width:10rem;height:2.8rem;font-size: 2rem;padding: 0 0 0 1.5rem}
 
 .side-menu-list{margin-right:1.6rem;}
+.side-menu-list p{margin:0 0 0.3rem 0;height:1rem;}
 
 .side-menu{height:calc(100% - 7.6rem);padding:1.8rem 2rem 2rem;}
 .side-menu div{padding-top:1rem;}
