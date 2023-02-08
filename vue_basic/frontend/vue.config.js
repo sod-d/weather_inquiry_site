@@ -1,24 +1,16 @@
- //const { defineConfig } = require("@vue/cli-service");
 const MomentLocalesPlugin = require("moment-locales-webpack-plugin");
 const webpack = require("webpack");
 const path = require("path");
 
-//module.exports = defineConfig({
 const config = {
-  //transpileDependencies: true,
-  // 개발 서버 설정
   devServer: {
-    // 프록시 설정
     proxy: {
-      // 프록시 요청을 보낼 api의 시작 부분
       "/pushwidgetapi": {
-        // 프록시 요청을 보낼 서버의 주소
         target: "https://pushappintro.kma.go.kr/",
         changeOrigin: true,
       },
-      "/v1": {
-        // 프록시 요청을 보낼 서버의 주소
-        target: "https://openapi.naver.com",
+      "/w": {
+        target: "https://www.weather.go.kr/",
       },
     },
   },
@@ -41,7 +33,6 @@ const config = {
       }),
     ],
   },
-  //});
 };
 
 module.exports = config;
