@@ -39,7 +39,7 @@ export default {
       console.log('대기');
     },
 
-    async callPopup2(){
+    async callConfirm(){
       let isOK = this.$confirm("confirm Popup");
 
       console.log(isOK);
