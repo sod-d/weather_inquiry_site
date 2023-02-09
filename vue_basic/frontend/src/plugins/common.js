@@ -1,5 +1,5 @@
 import axios from "axios";
-import EventBus, { $popAlert, $confirm, $list } from "@/common/EventBus";
+import EventBus, { $popAlert, $popConfirm, $list } from "@/common/EventBus";
 import { MNetSend } from '@/common/service.api';
 
 
@@ -17,7 +17,7 @@ export default {
     Vue.prototype.$axios = axiosInstance;
 
     Vue.prototype.$popAlert = $popAlert;
-    Vue.prototype.$confirm = $confirm;
+    Vue.prototype.$popConfirm = $popConfirm;
     Vue.prototype.$list = $list;
        
     Vue.prototype.$MNetSend = MNetSend;

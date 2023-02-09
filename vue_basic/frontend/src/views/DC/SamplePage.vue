@@ -11,7 +11,7 @@
 <script>
 
 export default {
-  name: "Login",
+  name: "Example",
   data() {
     return {
 
@@ -21,9 +21,11 @@ export default {
   computed: {
    
   },
+
   watch:{
 
   },
+
   methods: {
     async apiTest(){
 			let rst = await this.$MNetSend({
@@ -33,21 +35,22 @@ export default {
 			console.log(rst);
     },
 
-    async callPopup(){
-      await this.$popAlert("메세지는 열린다.");
+    async callAlert(){
+      await this.$popAlert("alert 팝업");
 
       console.log('대기');
     },
 
     async callConfirm(){
-      let isOK = this.$confirm("confirm Popup");
+      let isOK = this.$popConfirm("confirm 팝업");
 
       console.log(isOK);
     }
 
   },
+
   mounted() {
-    console.log("A");
+
   },
 };
 </script>

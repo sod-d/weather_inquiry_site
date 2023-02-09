@@ -17,7 +17,7 @@ export function $popAlert(param) {
     })
 }
 
-export function $confirm(param) {
+export function $popConfirm(param) {
     if (_.isString(param)) param = { text: param };
     
     EventBus.$emit('showConfirm', param);
