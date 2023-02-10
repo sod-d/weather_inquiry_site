@@ -1,7 +1,8 @@
 <template>
   <div>
 		<h1>Sample Page</h1>
-    <button @click="apiTest">API 통신 테스트</button><br/><br/>
+    <button @click="apiTest">API 통신 테스트 type1</button><br/><br/>
+    <button @click="apiTest2">API 통신 테스트 type2</button><br/><br/>
     <button @click="callAlert">Alert 팝업 호출</button><br/><br/>
     <button @click="callConfirm">Confirm 팝업 호출</button><br/><br/>
     <button @click="callCommonUtil">공통함수 호출</button><br/><br/>
@@ -38,6 +39,14 @@ export default {
     async apiTest(){
 			let rst = await this.$MNetSend({
 				url: 'pushwidgetapi/wnuri-fct2021/api/main/current-weather-array.do?code=1168058000,1162069500&unit=m/s',
+			});
+
+			console.log(rst);
+    },
+
+    async apiTest2(){
+			let rst = await this.$MNetSend({
+				url: 'w/rest/zone/find/dong.do?x=1&y=1&lat=37.5129283&lon=127.0647686',
 			});
 
 			console.log(rst);
