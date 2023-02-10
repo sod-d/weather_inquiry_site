@@ -6,7 +6,7 @@
     <button @click="callConfirm">Confirm 팝업 호출</button><br/><br/>
     <button @click="callCommonUtil">공통함수 호출</button><br/><br/>
     <button @click="openComponent">자식으로 데이터 전달</button><br/><br/>
-    <child-component v-if="openActive" @close="openActive = false" :sendData=testData></child-component>
+    <child-component v-if="openActive" @close="openActive = false, testData = 0" :sendData=testData></child-component>
   </div>
    
 </template>
