@@ -50,9 +50,13 @@ export default {
     },
 
     async callConfirm(){
-      let isOK = this.$popConfirm("confirm 팝업");
+      let isOK = await this.$popConfirm("confirm 팝업");
 
-      console.log(isOK);
+      if(isOK){
+        console.log("확인 버튼을 눌렀습니다.");
+      }else{
+        console.log("취소 버튼을 눌렀습니다.");
+      }
     },
 
     callCommonUtil(){
