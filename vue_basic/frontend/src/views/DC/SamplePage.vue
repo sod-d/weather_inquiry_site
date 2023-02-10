@@ -1,20 +1,28 @@
 <template>
   <div>
 		<h1>Sample Page</h1>
-    <button @click="apiTest()">API 통신 테스트</button><br/><br/>
-    <button @click="callAlert()">Alert 팝업 호출</button><br/><br/>
-    <button @click="callConfirm()">Confirm 팝업 호출</button>
+    <button @click="apiTest">API 통신 테스트</button><br/><br/>
+    <button @click="callAlert">Alert 팝업 호출</button><br/><br/>
+    <button @click="callConfirm">Confirm 팝업 호출</button><br/><br/>
+    <button @click="callCommonUtil">공통함수 호출</button><br/><br/>
+    <button @click="openComponent">자식으로 데이터 전달</button><br/><br/>
+    <child-component v-if="openActive" @close="openActive = false" :sendData=testData></child-component>
   </div>
    
 </template>
 
 <script>
 
+import CommonUtil from '@/common/commonUtil.js';
+import childComponent from '@/views/DC/childComponent';
+
 export default {
   name: "Example",
+  components : {childComponent},
   data() {
     return {
-
+      openActive : false,
+      testData : 0
     };
   },
   
@@ -45,6 +53,15 @@ export default {
       let isOK = this.$popConfirm("confirm 팝업");
 
       console.log(isOK);
+    },
+
+    callCommonUtil(){
+      CommonUtil.CommonFunc();
+    },
+
+    openComponent(){
+      this.openActive = true;
+      this.testData += 1;
     }
 
   },
@@ -56,5 +73,5 @@ export default {
 </script>
 
 <style>
- 
+
 </style>
