@@ -43,7 +43,9 @@ export default {
 	name : 'skyWeather',
 	data(){
 		return {
-			apiData: {},
+			apiData: {
+				warning : '',
+			},
 
 			activeName: 'first',
 
