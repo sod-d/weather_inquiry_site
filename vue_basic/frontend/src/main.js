@@ -33,6 +33,9 @@ import "@/common/$mcore.js";
 import global from "./mixin/biz.util.js";
 Vue.mixin(global);
 
+import VueGeolocation from 'vue-geolocation-api';
+Vue.use(VueGeolocation);
+
 
 // 모든 페이지에서 안드로이드 백키에 대한 공통처리
 const exit_pages = ['/'];

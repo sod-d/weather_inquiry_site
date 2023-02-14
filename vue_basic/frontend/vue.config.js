@@ -20,6 +20,12 @@ const config = {
         // 프록시 요청을 보낼 서버의 주소
         target: "https://openapi.naver.com",
       },
+      "/weathergokr": {
+        // 프록시 요청을 보낼 서버의 주소
+        target: "https://www.weather.go.kr",
+        changeOrigin: true,
+      },
+      
     },
   },
   configureWebpack: {

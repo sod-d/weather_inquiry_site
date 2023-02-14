@@ -12,6 +12,7 @@
     "array-merge-by-key": "^1.0.1",
     "array-move": "^4.0.0",
     "axios": "^0.25.0",
+    "bootstrap-vue": "^2.23.1",
     "browser-image-compression": "^1.0.17",
     "debounce": "^1.2.1",
     "deepmerge": "^4.2.2",
@@ -26,16 +27,16 @@
     "vue-advanced-cropper": "^1.10.1",
     "vue-carousel": "^0.18.0",
     "vue-chartjs": "^3.5.1",
+    "vue-doc-preview": "^0.3.2",
     "vue-fragment": "1.5.1",
+    "vue-geolocation-api": "^0.1.21",
     "vue-infinite-loading": "^2.4.5",
     "vue-lodash": "^2.1.2",
     "vue-router": "^3.5.2",
     "vue2-touch-events": "^3.2.2",
     "vuedraggable": "^2.24.3",
     "vuex": "^3.6.2",
-    "vuex-persistedstate": "^4.1.0",
-    "vue-doc-preview": "^0.3.2",
-    "bootstrap-vue": "^2.23.1"
+    "vuex-persistedstate": "^4.1.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
