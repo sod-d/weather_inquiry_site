@@ -1,29 +1,40 @@
 <template>
   <div>
 		<h1>Sample Page</h1>
-    <button @click="apiTest()">API 통신 테스트</button><br/><br/>
-    <button @click="callAlert()">Alert 팝업 호출</button><br/><br/>
-    <button @click="callConfirm()">Confirm 팝업 호출</button>
+    <button @click="apiTest">API 통신 테스트 type1</button><br/><br/>
+    <button @click="apiTest2">API 통신 테스트 type2</button><br/><br/>
+    <button @click="callAlert">Alert 팝업 호출</button><br/><br/>
+    <button @click="callConfirm">Confirm 팝업 호출</button><br/><br/>
+    <button @click="callCommonUtil">공통함수 호출</button><br/><br/>
+    <button @click="openComponent">자식으로 데이터 전달</button><br/><br/>
+    <child-component v-if="openActive" @close="openActive = false, testData = 0" :sendData=testData></child-component>
   </div>
    
 </template>
 
 <script>
 
+import CommonUtil from '@/common/commonUtil.js';
+import childComponent from '@/views/DC/childComponent';
+
 export default {
-  name: "Login",
+  name: "Example",
+  components : {childComponent},
   data() {
     return {
-
+      openActive : false,
+      testData : 0
     };
   },
   
   computed: {
    
   },
+
   watch:{
 
   },
+
   methods: {
     async apiTest(){
 			let rst = await this.$MNetSend({
@@ -33,25 +44,47 @@ export default {
 			console.log(rst);
     },
 
-    async callPopup(){
-      await this.$popAlert("메세지는 열린다.");
+    async apiTest2(){
+			let rst = await this.$MNetSend({
+				url: 'w/rest/zone/find/dong.do?x=1&y=1&lat=37.5129283&lon=127.0647686',
+			});
+
+			console.log(rst);
+    },
+
+    async callAlert(){
+      await this.$popAlert("alert 팝업");
 
       console.log('대기');
     },
 
     async callConfirm(){
-      let isOK = this.$confirm("confirm Popup");
+      let isOK = await this.$popConfirm("confirm 팝업");
 
-      console.log(isOK);
+      if(isOK){
+        console.log("확인 버튼을 눌렀습니다.");
+      }else{
+        console.log("취소 버튼을 눌렀습니다.");
+      }
+    },
+
+    callCommonUtil(){
+      CommonUtil.CommonFunc();
+    },
+
+    openComponent(){
+      this.openActive = true;
+      this.testData += 1;
     }
 
   },
+
   mounted() {
-    console.log("A");
+
   },
 };
 </script>
 
 <style>
- 
+
 </style>
