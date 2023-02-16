@@ -23,7 +23,9 @@ export default {
   data() {
     return {
       openActive : false,
-      testData : 0
+      testData : 0,
+      let: '37.51292665',
+      log: '127.0648145'
     };
   },
   
@@ -46,7 +48,7 @@ export default {
 
     async apiTest2(){
 			let rst = await this.$MNetSend({
-				url: 'w/rest/zone/find/dong.do?x=1&y=1&lat=37.5129283&lon=127.0647686',
+				url: `w/rest/zone/find/dong.do?x=1&y=1&lat=${this.let}&lon=${this.log}`,
 			});
 
 			console.log(rst);
