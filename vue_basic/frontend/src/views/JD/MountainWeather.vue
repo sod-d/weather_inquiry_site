@@ -1,35 +1,10 @@
 <template>
   <div>
-	<el-menu :default-active="tabActiveIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-		<el-menu-item index="0">서울/경기도</el-menu-item>
-		<el-menu-item index="1">강원도</el-menu-item>
-		<el-menu-item index="2">충청남북도</el-menu-item>
-		<el-menu-item index="3">전라남북도</el-menu-item>
-		<el-menu-item index="4">경상남북도</el-menu-item>
-		<el-menu-item index="5">제주특별자치도</el-menu-item>
-	</el-menu>
-	<div id="map"></div>
-	<!--<div class="button-group">
-		<button @click="changeSize(0)">Hide</button>
-		<button @click="changeSize(400)">show</button>
-		<button @click="displayMarker(city01)">서울/경기도</button>
-		<button @click="displayMarker(city02)">강원도</button>
-		<button @click="displayMarker(city03)">충청남북도</button>
-		<button @click="displayMarker(city04)">전라남북도</button>
-		<button @click="displayMarker(city05)">경상남북도</button>
-		<button @click="displayMarker(city06)">제주특별자치도</button>
-		<button @click="displayMarker([])">초기화</button>
-		<button @click="displayInfoWindow">infowindow</button>
-	</div>-->
-	<!-- <div v-if="fetchedMountainWeatherInfo.forecast.dailyItems">
-		<el-table :data="fetchedMountainWeatherInfo.forecast.dailyItems" style="width: 100%;" size="small" border>
-			<el-table-column prop="date" label="날짜" width="180"></el-table-column>
-			<el-table-column prop="time" label="시간" width="180" v-for="(items, index) in fetchedMountainWeatherInfo.forecast.dailyItems" :key="index"></el-table-column>
-			<el-table-column prop="items[0].chillTemp" label="Address"></el-table-column>
-		</el-table>
-	</div> -->
-
-	<div>
+	<mountain-tab :activeIndex=tabActiveIndex @selectTab="selectTab"></mountain-tab>
+	<!-- <div id="map"></div> -->
+	<mountain-kakao-map :selectCityData="computedCityData" @selectMarker="selectMarker"></mountain-kakao-map>
+	<mountain-weather-detail :selectDetailData="computedDetailData"></mountain-weather-detail>
+	<!-- <div>
 		<el-collapse v-model="detailActiveNm" @change="toggleDetailData" v-if="mountainWeatherInfo" accordion>
 			<el-collapse-item :title="`${dailyItem.dateLabel}(${dailyItem.date})`" :name="`${index}`"  v-for="(dailyItem,index) in mountainWeatherInfo.forecast.dailyItems" :key="index">
 				<div v-for="(item, index2) in dailyItem.items" :key="index2" style="padding:5px">
@@ -42,21 +17,22 @@
 						<el-descriptions-item label="강수확률">{{ item.pop }}%</el-descriptions-item>	
 					</el-descriptions>
 				</div>
-			</el-collapse-item>
-			
+			</el-collapse-item>	
 		</el-collapse>
-	</div>
-	
-
-	
+	</div> -->
   </div>
   
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+// import {mapGetters} from 'vuex'
+import MountainTab from '@/views/JD/MountainTab';
+import MountainKakaoMap from '@/views/JD/MountainKakaoMap';
+import MountainWeatherDetail from '@/views/JD/MountainWeatherDetail';
+
 export default {
-	name: "KakaoMapMountain",
+	name: "MountainWeather",
+	components : {MountainTab,MountainKakaoMap,MountainWeatherDetail},
 	data() {
 		return {
 			cityData : [
@@ -175,242 +151,46 @@ export default {
 					]
 				}
 			],
-			markers: [],
-			infowindow: null,
+			
 			selectGroupId : null,
-			tabActiveIndex : '0',
-			detailActiveNm : '0',
-			customOverlays : [],
-			mountainWeatherInfo : null
+			tabActiveIndex : 0,
+			mountainWeatherInfo : null,
+			selectCityData : null,
+			selectDetailData : null
 		};
 	},
+	beforeMount(){
+		this.selectCityData = this.cityData[this.tabActiveIndex];
+	},
 	mounted() {
-		if (window.kakao && window.kakao.maps) {
-			this.initMap();
-		} else {
-			const script = document.createElement("script");
-			/* global kakao */
-			script.onload = () => kakao.maps.load(this.initMap);
-			script.src ="//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=62ecb7bce08dbe473d7d27823539b761";
-			document.head.appendChild(script);
-		}
-
-		// navigator.geolocation.getCurrentPosition(pos => {
-		// 	console.log(pos);
-		// }, err => {
-		// 	console.log(err);
-		// })
+		
 	},
 	methods: {
-		initMap() {
-			const container = document.getElementById("map");
-			const options = {
-				center: new kakao.maps.LatLng(33.450701, 126.570667),
-				level: 5
-			};
-			
-			//지도 객체를 등록합니다.
-			//지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
-			this.map = new kakao.maps.Map(container, options);
-			this.map.addOverlayMapTypeId(kakao.maps.MapTypeId.TERRAIN);
-
-			this.displayMarker(this.cityData[this.tabActiveIndex]);
-		},
-		changeSize(size) {
-			const container = document.getElementById("map");
-			container.style.width = `${size}px`;
-			container.style.height = `${size}px`;
-			this.map.relayout();
+		selectTab(key){
+			console.log("MoutainWeather SelectTab key : " + key);
+			this.selectCityData = this.cityData[key];
+			console.log(this.selectCityData);
 		},
 
-		displayMarker(cityInfo) {
-			if (this.markers.length > 0) {
-				this.markers.forEach((marker) => marker.setMap(null));
-			}
-
-			if(this.customOverlays.length > 0){
-				this.customOverlays.forEach((overlay) => overlay.setMap(null));
-			}
-			
-
-			// if(cityInfo.markerPositions.length > 0){}
-			const positions = cityInfo.markerPositions.map((position) => {
-				let returnObj = new kakao.maps.LatLng(...position.position);
-				returnObj.mtId = position.mtId;
-				returnObj.mtName = position.mtName;
-				return returnObj;
-			});
-
-			const markerImage = new kakao.maps.MarkerImage(require("@/assets/img/mountain/ico_mountain.png"), new kakao.maps.Size(25,16));
-			
-				
-			if (positions.length > 0) {
-				this.markers = positions.map((position) =>{
-					
-					const marker = new kakao.maps.Marker({
-						map: this.map,
-						position,
-						image : markerImage,
-					});
-
-					const content = document.createElement('div');
-					content.style.cssText = "background-color:white;color:blue;border-radius:4px;"
-					content.innerText = position.mtName;
-					content.onclick = () =>{
-						this.getMountainWeatherInfo(position.mtId);
-					};
-
-					const customOverlay = new kakao.maps.CustomOverlay({
-						position,
-						yAnchor:2,
-						zIndex:1,
-						content : content
-					});
-					console.log(customOverlay);
-					this.customOverlays.push(customOverlay);
-					customOverlay.setMap(this.map);
-
-					kakao.maps.event.addListener(marker, "click", ()=>{
-						// console.log(marker);
-						console.log(position.mtId);
-
-						this.getMountainWeatherInfo(position.mtId);
-					});
-
-					return marker;
-				});
-				
-				const bounds = positions.reduce(
-					(bounds, latlng) => bounds.extend(latlng),
-					new kakao.maps.LatLngBounds()
-				);
-				this.map.setBounds(bounds);
-			}
-
-			this.selectGroupId = cityInfo.groupId;
+		selectMarker(data){
+			console.log(data);
+			this.selectDetailData = data;
 		},
-		
-		displayInfoWindow() {
-			if (this.infowindow && this.infowindow.getMap()) {
-				//이미 생성한 인포윈도우가 있기 때문에 지도 중심좌표를 인포윈도우 좌표로 이동시킨다.
-				this.map.setCenter(this.infowindow.getPosition());
-				return;
-			}
-			
-			var iwContent = '<div style="padding:5px;">Hello World!</div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
-			iwPosition = new kakao.maps.LatLng(33.450701, 126.570667), //인포윈도우 표시 위치입니다
-			iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
-			
-			this.infowindow = new kakao.maps.InfoWindow({
-				map: this.map, // 인포윈도우가 표시될 지도
-				position: iwPosition,
-				content: iwContent,
-				removable: iwRemoveable,
-			});
-			this.map.setCenter(iwPosition);
-		},
-
-		async getMountainWeatherInfo(mtId){
-			let result = await this.$MNetSend({
-				url : 'pushwidgetapi/wnuri-fct2021/api/theme/mountain-weather.do?groupId=' + this.selectGroupId + '&mtId=' + mtId
-			})
-			console.log(result);
-
-			this.mountainWeatherInfo = result;
-		},
-
-		alertOpen(){
-			console.log();
-			this.$alert('This is a message', this.mountainWeatherInfo.mtName, {
-				confirmButtonText: '확인',
-				// callback: action => {
-				// 	this.$message({
-				// 		type: 'info',
-				// 		message: `action: ${ action }`
-				// 	});
-				// }
-			});
-		},
-		handleSelect(key){
-			this.displayMarker(this.cityData[key]);
-		},
-		toggleDetailData(val){
-			console.log(val);
-			window.scrollTo(0,0);
-		},
-		overlayClick(){
-			console.log(this);
-		}
 	},
 	computed : {
+		computedCityData(){
+			console.log(this.selectCityData);
+			return this.selectCityData;
+		},
+		computedDetailData(){
+			return this.selectDetailData;
+		}
 	}
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-#map {
-  width: 100%;
-  height: 400px;
-}
 
-.button-group {
-  margin: 10px 0px;
-}
 
-button {
-  margin: 0 3px;
-}
-.el-collapse-item__header{
-	font-size: 20px !important;
-}
-.wic_w {width: auto; height: auto;}
-.wic_w > img {display: block; margin: auto; width:32px;height: 32px;}
-.wic.DB00 { background-color:rgba(0,0,0,0); background-image:none;} /* 값 오류 */
-.wic.DB01 {content : url(../../assets/img/mountain/ic-db01.png);} /* 맑음 */
-.wic.DB02 {content : url(../../assets/img/mountain/ic-db02.png);} /* 구름조금 */
-.wic.DB03 {content : url(../../assets/img/mountain/ic-db03.png);} /* 구름많음 */
-.wic.DB04 {content : url(../../assets/img/mountain/ic-db04.png);} /* 흐림 */
-.wic.DB05 {content : url(../../assets/img/mountain/ic-db05.png);} /* 비 */
-.wic.DB06 {content : url(../../assets/img/mountain/ic-db06.png);} /* 비/눈 */
-.wic.DB07 {content : url(../../assets/img/mountain/ic-db07.png);} /* 눈/비 */
-.wic.DB08 {content : url(../../assets/img/mountain/ic-db08.png);} /* 눈 */
-.wic.DB09 {content : url(../../assets/img/mountain/ic-db09.png);} /* 소나기 */
-.wic.DB10 {content : url(../../assets/img/mountain/ic-db10.png);} /* 빗방울 */
-.wic.DB11 {content : url(../../assets/img/mountain/ic-db11.png);} /* 빗방울/눈날림 */
-.wic.DB12 {content : url(../../assets/img/mountain/ic-db12.png);} /* 눈날림 */
-.wic.DB_LGT {content : url(../../assets/img/mountain/ic-db-lgt.png);} /* 낙뢰 */
-
-.wic.DB00_N { background-color:rgba(0,0,0,0); background-image:none;} /* 값없음_밤 */
-.wic.DB01_N {content : url(../../assets/img/mountain/ic-db01-n.png);} /* 맑음_밤 */
-.wic.DB02_N {content : url(../../assets/img/mountain/ic-db02-n.png);} /* 구름조금_밤 */
-.wic.DB03_N {content : url(../../assets/img/mountain/ic-db03-n.png);} /* 구름많음_밤 */
-.wic.DB04_N {content : url(../../assets/img/mountain/ic-db04-n.png);} /* 흐림_밤 */
-
-.wic.NB {content : url(../../assets/img/mountain/ic-nb.png);} /* 값없음 */
-.wic.NB01 {content : url(../../assets/img/mountain/ic-nb01.png);} /* 맑음 */
-.wic.NB02 {content : url(../../assets/img/mountain/ic-nb02.png);} /* 구름조금 */
-.wic.NB03 {content : url(../../assets/img/mountain/ic-nb03.png);} /* 구름많음 */
-.wic.NB04 {content : url(../../assets/img/mountain/ic-nb04.png);} /* 흐림 */
-.wic.NB07 {content : url(../../assets/img/mountain/ic-nb07.png);} /* 소나기 */
-.wic.NB08 {content : url(../../assets/img/mountain/ic-nb08.png);} /* 비 */
-
-.wic.NB11 {content : url(../../assets/img/mountain/ic-nb11.png);} /* 눈 */
-.wic.NB12 {content : url(../../assets/img/mountain/ic-nb12.png);} /* 비/눈 */
-.wic.NB13 {content : url(../../assets/img/mountain/ic-nb13.png);} /* 눈/비 */
-
-.wic.NB14 {content : url(../../assets/img/mountain/ic-nb14.png);} /* 천둥번개 */
-.wic.NB15 {content : url(../../assets/img/mountain/ic-nb15.png);} /* 안개 */
-.wic.NB16 {content : url(../../assets/img/mountain/ic-nb16.png);} /* 황사 */
-.wic.NB17 {content : url(../../assets/img/mountain/ic-nb17.png);} /* 박무-엷은안개 */
-.wic.NB18 {content : url(../../assets/img/mountain/ic-nb18.png);} /* 연무 */
-.wic.NB20 {content : url(../../assets/img/mountain/ic-nb20.png);} /* 가끔 비,한때 비 */
-.wic.NB21 {content : url(../../assets/img/mountain/ic-nb21.png);} /* 가끔 눈,한때 눈 */
-.wic.NB22 {content : url(../../assets/img/mountain/ic-nb22.png);} /* 가끔눈 또는 비, 한때눈 또는 비 */
-.wic.NB23 {content : url(../../assets/img/mountain/ic-nb23.png);} /* 가끔눈 또는비, 한때 눈 또는 비 */
-
-.wic.NB01_N {content : url(../../assets/img/mountain/ic-nb01-n.png);} /* 맑음_밤 */
-.wic.NB02_N {content : url(../../assets/img/mountain/ic-nb02-n.png);} /* 구름조금_밤 */
-.wic.NB03_N {content : url(../../assets/img/mountain/ic-nb03-n.png);} /* 구름많음_밤 */
-.wic.NB04_N {content : url(../../assets/img/mountain/ic-nb04-n.png);} /* 흐림_밤 */
 </style>
