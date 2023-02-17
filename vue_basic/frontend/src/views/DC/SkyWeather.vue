@@ -73,6 +73,8 @@
 </template>
 
 <script>
+import moment from "moment";
+
 export default {
 	name : 'skyWeather',
 	data(){
@@ -90,7 +92,7 @@ export default {
 		this.getWeatherData();
 	},
 	mounted(){
-		
+		console.log(moment().format('YYYYMMDD'));
 	},
 	methods: {
 		formatter(row, column) {
