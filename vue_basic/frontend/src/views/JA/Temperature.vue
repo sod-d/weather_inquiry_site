@@ -12,6 +12,9 @@
 		</div>
 
 		<kakao-map class="map-cont"></kakao-map>
+		<div>
+			<p class="curr-time">{{ currentWeatherTm }} 갱신</p>
+		</div>
 	</div>
 </template>
 
@@ -64,5 +67,9 @@ export default {
 </script>
 
 <style scoped>
-
+.curr-time{
+	font-size: 14px;
+    text-align: right;
+    padding-right: 10px;
+}
 </style>
