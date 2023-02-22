@@ -46,3 +46,13 @@ export default {
   }
 };
 </script>
+<style>
+header span{
+  position: absolute;
+  background-position: right center;
+}
+h2{
+  margin: 0;
+  
+}
+</style>

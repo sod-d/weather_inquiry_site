@@ -3,24 +3,18 @@
 		<div class="hdfix-wrap">
 		</div>
 		<div class="content scroll forecast">
-			
-
-			<div class="contentDiv" v-show="tableData.length == 0 ? false : true">
-				<div class="day-forecast">
-					<div class="btn-sea"><button type="button" class="btn-rad on">해상특보:발효중</button></div>
-				</div>
-				<ul id="CS">
-						<li><strong>해상특보 발표 현황 : </strong><span v-html="oceanWarningData.tm"></span></li>
-				</ul>
-				<el-table :data="tableData" style="width: 100%" height="400">
-					<el-table-column prop="areasText" label="해당지역" width="200"></el-table-column>
-					<el-table-column prop="type" label="특보" width="80"></el-table-column>
-					<el-table-column prop="level" label="수준" width="70"></el-table-column>
-					<el-table-column prop="tmFc" label="발표시각" width="150"></el-table-column>
-					<el-table-column prop="tmEf" label="발효시각" width="150"></el-table-column>
-					<el-table-column prop="tmEd" label="해제예고" width="120"></el-table-column>
-				</el-table>
+			<div class="day-forecast">
+				<div class="btn-sea"><button type="button" class="btn-rad on">해상특보:발효중</button></div>
 			</div>
+
+			<el-table :data="tableData" style="width: 100%" height="400">
+				<el-table-column prop="type" label="해당지역" width="200"></el-table-column>
+				<el-table-column prop="level" label="특보" width="80"></el-table-column>
+				<el-table-column prop="areasText" label="수준" width="70"></el-table-column>
+				<el-table-column prop="tmFc" label="발표시각" width="150"></el-table-column>
+				<el-table-column prop="tmEf" label="발효시각" width="150"></el-table-column>
+				<el-table-column prop="tmEd" label="해제예고" width="120"></el-table-column>
+			</el-table>
 			
 			<div class="sea-special-report-map">
 				<div class="cont-box03">
@@ -192,7 +186,8 @@
 						<div class="title"><span>[동해북부앞바다]</span> 날씨전망</div>
 					</div>
 				</div>
-			</div>
+					
+			</div>	
 
 			<!--전국지도 -->
 			<div class="report-day country">
@@ -200,7 +195,74 @@
 					<p class="txt">지도에서 지역을 선택하시면 날씨를 확인할 수 있습니다.</p>
 			</div>
 			<!-- 전국지도-->
+			
+			<!-- 지역지도 -->	
+			<div id="region" class="report-day forecast region" style="">
+					<h3 class="title">일일예보</h3>
+					<div class="today-short-term">
+							<div class="container long-term">
+									<div class="swiper-container swiper4">
+											<div class="short_term_header">
+													<ul class="ltit_header">
+															<li class="h_wind">풍향</li>
+															<li class="h_ms">풍속(m/s)</li>
+															<li class="h_ht">파고(m)</li>
+													</ul>
+											</div>
 
+											<div class="swiper-wrapper"><!-- swiper-wrapper  -->
+													<div class="swiper-slide">
+															<div class="short_term">
+																	<div class="term_wrap04" id="shortTermWrap">
+																			
+																	</div>
+															</div>
+													</div>
+															<div class="swiper-scrollbar"></div>
+											</div>  <!-- swiper-wrapper  -->
+									</div>
+							</div>
+					</div>
+			</div>
+			<!-- 지역지도 -->
+
+			<!-- 전국지도 -->
+			<div class="report-metaphase country">
+					<h3 class="title">중기예보</h3>
+					<p class="txt">앞으로 10일까지의 바다날씨와 예상파고 정보를 제공합니다.</p>
+					<p class="right"><button type="button" id="seaBuoyNationBtn">기상실황 해상 관측자료 보기</button></p>
+			</div>	
+			<!-- 전국지도 -->
+
+			<!-- 지역지도 -->
+			<div class="report-metaphase forecast region" style="display: none;">
+					<h3 class="title"><span>중기예보</span> <p class="right"><button type="button" id="midTermTotalBtn">전체보기</button></p></h3>
+					<div class="today-short-term">
+							<div class="container long-term">
+									<div class="swiper-container swiper4">
+											<div class="short_term_header">
+													<ul class="ltit_header">
+															<li class="h_wave">최고파고(m)</li>
+															<li class="l_wave">최저파고(m)</li>
+													</ul>
+											</div>
+
+											<div class="swiper-wrapper"><!-- swiper-wrapper  -->
+													<div class="swiper-slide">
+															<div class="short_term">
+																	<div class="term_wrap04" id="midTermWrap">
+												
+																	</div>
+															</div>
+													</div>
+															<div class="swiper-scrollbar"></div>
+											</div>  <!-- swiper-wrapper  -->
+									</div>
+							</div>
+					</div>
+					<p class="right"><button type="button" id="seaBuoyRegionBtn">기상실황 해상 관측자료 보기</button></p>
+			</div>
+			<!-- 지역지도 -->
 		</div>
 	</div>
 </template>
@@ -217,16 +279,13 @@ export default {
 				warning : '',
 			},
 
-			oceanWarningData: [],
-			tableData: [],
-
 			activeName: 'first',
 
 			tableData: [],
 		}
 	},
 	created(){
-		this.getOceanWarning();
+
 	},
 	mounted(){
 		
@@ -241,50 +300,16 @@ export default {
 		async getSeaWeatherData(){
 			let rst = await this.$MNetSend({
 				url: 'pushwidgetapi/wnuri-fct2021/api/wnuri-sfct/today/short-term.do?topArea=12A10000&midArea=12A10100&btmArea=12A10100',
-				//url: 'pushwidgetapi/wnuri-fct2021/api/wnuri-sfct/today/short-term.do',
+				url: 'pushwidgetapi/wnuri-fct2021/api/wnuri-sfct/today/short-term.do',
 			});
 
 			console.log(rst);
 
-			//this.apiData = rst;
-			//this.tableData = rst.warningNow.items;
+			this.apiData = rst;
+			this.tableData = rst.warningNow.items;
 
-			//console.log(this.tableData);
+			console.log(this.tableData);
 		},
-
-
-		async getOceanWarning(){
-			let rst = await this.$MNetSend({
-				url: 'pushwidgetapi/wnuri-fct2021/api/wnuri-sfct/today/warning-now.do'
-			});
-
-			console.log(rst);
-
-			this.oceanWarningData = rst.warningNow;
-			this.tableData = this.oceanWarningData.items;
-		}
 	}
 }
 </script>
-
-<style>
-.el-tabs__nav{
-	width: 100%;
-	padding-top: 0.5rem;
-}
-
-.el-tabs__item{
-	width: 50%;
-	text-align: center;
-	padding : 0;
-}
-
-.contentDiv{
-	padding-top: 1rem;
-}
-
-#CS>li>span{
-	font-size: 0.9rem;
-}
-
-</style>
