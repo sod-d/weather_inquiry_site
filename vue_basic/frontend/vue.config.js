@@ -13,10 +13,9 @@ const config = {
       "/w": {
         target: "https://www.weather.go.kr/",
       },
-      "/weathergokr": {
+      "/w": {
         // 프록시 요청을 보낼 서버의 주소
         target: "https://www.weather.go.kr",
-        changeOrigin: true,
       },
       
     },
