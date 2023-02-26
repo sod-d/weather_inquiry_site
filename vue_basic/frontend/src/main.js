@@ -33,6 +33,8 @@ import "@/common/$mcore.js";
 import global from "./mixin/biz.util.js";
 Vue.mixin(global);
 
+import vueMoment from 'moment'
+Vue.use(vueMoment);
 
 // 모든 페이지에서 안드로이드 백키에 대한 공통처리
 const exit_pages = ['/'];
