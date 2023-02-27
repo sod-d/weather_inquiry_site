@@ -1,5 +1,5 @@
 <template>
-	<el-menu :default-active="`${activeIndex}`" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+	<el-menu :default-active="`${this.activeIndex}`" class="el-menu-demo" mode="horizontal" @select="handleSelect">
 		<el-menu-item index="0">서울/경기도</el-menu-item>
 		<el-menu-item index="1">강원도</el-menu-item>
 		<el-menu-item index="2">충청남북도</el-menu-item>
@@ -14,11 +14,8 @@ export default {
 	name: 'MountainTab',
 	data(){
 		return {
-
+			activeIndex : 0
 		}
-	},
-	props: {
-		activeIndex : Number
 	},
 	mounted(){
 		console.log(this.activeIndex);
@@ -26,7 +23,11 @@ export default {
 
 	methods : {
 		handleSelect(key){
-			this.$emit('selectTab', key);
+			if(this.activeIndex != key){
+				this.activeIndex = key;
+				this.$emit('selectTab', key);
+			}
+			
 		}
 	}
 

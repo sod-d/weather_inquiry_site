@@ -1,6 +1,6 @@
 <template>
   <div>
-	<mountain-tab :activeIndex=tabActiveIndex @selectTab="selectTab"></mountain-tab>
+	<mountain-tab @selectTab="selectTab"></mountain-tab>
 	<!-- <div id="map"></div> -->
 	<mountain-kakao-map :selectCityData="computedCityData" @selectMarker="selectMarker"></mountain-kakao-map>
 	<mountain-weather-detail :selectDetailData="computedDetailData"></mountain-weather-detail>
@@ -169,6 +169,7 @@ export default {
 		selectTab(key){
 			console.log("MoutainWeather SelectTab key : " + key);
 			this.selectCityData = this.cityData[key];
+			this.selectDetailData = null;
 			console.log(this.selectCityData);
 		},
 
