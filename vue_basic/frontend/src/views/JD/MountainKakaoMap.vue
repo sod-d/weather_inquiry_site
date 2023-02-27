@@ -84,15 +84,20 @@ export default {
 					});
 
 					const content = document.createElement('div');
-					content.style.cssText = "background-color:white;color:blue;border-radius:4px;"
+					// content.style.cssText = "background-color:white;color:blue;border-radius:4px;"
+					content.style.cssText = "white-space: nowrap;background: #fff;border: 1px solid #dcdfe6;color: #606266;text-align: center;border-radius: 4px;padding:5px 10px";
+					// content.innerText = position.mtName;
+					// content.classList.add('overlay-button');
 					content.innerText = position.mtName;
+					content.id = "mt" + position.mtId;
 					content.onclick = () =>{
+						this.changeClickColor(position.mtId);
 						this.getMountainWeatherInfo(position.mtId);
 					};
 
 					const customOverlay = new kakao.maps.CustomOverlay({
 						position,
-						yAnchor:2,
+						yAnchor:1.5,
 						zIndex:1,
 						content : content
 					});
@@ -100,9 +105,9 @@ export default {
 					customOverlay.setMap(this.map);
 
 					kakao.maps.event.addListener(marker, "click", ()=>{
-						// console.log(marker);
+						console.log(marker);
 						console.log(position.mtId);
-
+						this.changeClickColor(position.mtId);
 						this.getMountainWeatherInfo(position.mtId);
 					});
 
@@ -127,6 +132,17 @@ export default {
 
 			this.$emit('selectMarker', result);
 		},
+
+		changeClickColor(mtId){
+			this.customOverlays.map((obj)=>{
+				var orgContent = obj.getContent();
+				orgContent.style.color = "#606266";
+				orgContent.style.backgroundColor = "#fff";
+			});
+
+			document.querySelector("#mt" + mtId).style.color = "#fff";
+			document.querySelector("#mt" + mtId).style.backgroundColor = "#409eff";
+		}
 	},
 	watch : {
 		selectCityData(){
@@ -148,5 +164,20 @@ export default {
 
 button {
   margin: 0 3px;
+}
+.overlay-button
+{
+	/* display: inline-block; */
+	
+	
+	
+	
+	
+	/* box-sizing: border-box; */
+	outline: none;
+	margin: 0;
+	transition: .1s;
+	/* padding: 12px 20px; */
+	
 }
 </style>
