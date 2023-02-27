@@ -9,6 +9,7 @@ const Weather = () => import('../views/SY/Weather.vue');
 const Sky = () => import('../views/DC/SkyWeather.vue');
 const Sea = () => import('../views/DC/SeaWeather.vue');
 const Location = () => import('../views/HJ/Location.vue');
+const SearchLocation = () => import('../views/HJ/SearchLocation.vue');
 const Temperature = () => import('../views/JA/Temperature.vue');
 const Mountain = () => import('../views/JD/MountainWeather.vue');
 
@@ -65,6 +66,15 @@ const router = new Router({
       path: "/location",
       name: "관심지역 설정",
       component: Location,
+      meta: {
+        layout: Define.LAYOUT_TYPE.DEFAULT,
+        className: "dashboard",
+      },
+    },
+    {
+      path: "/searchLocation",
+      name: "지역검색",
+      component: SearchLocation,
       meta: {
         layout: Define.LAYOUT_TYPE.DEFAULT,
         className: "dashboard",
