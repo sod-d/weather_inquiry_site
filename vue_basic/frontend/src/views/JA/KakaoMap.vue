@@ -96,13 +96,6 @@ export default {
                     latlng: new kakao.maps.LatLng( 37.75, 128.88),
                     name : "강릉"
                 },
-                // { position: new kakao.maps.LatLng( , ) },    // 
-                // { position: new kakao.maps.LatLng( , ) },    // 
-                // { position: new kakao.maps.LatLng( , ) },    // 
-                // { position: new kakao.maps.LatLng( , ) },    // 
-                // { position: new kakao.maps.LatLng( , ) },    // 
-                // { position: new kakao.maps.LatLng( , ) },    // 
-                // { position: new kakao.maps.LatLng( , ) },    // 
             ];
 
             this.map.setDraggable(false);   // 드래그 막기
@@ -130,7 +123,7 @@ export default {
                 for(var i=0; i< this.weatherData.length; i++){
                     var _obj = this.markerPosition.find(x => x.name == this.weatherData[i].stnName);
                     if(_obj != undefined){  
-                        console.log("있어영!!! ", JSON.stringify(this.weatherData[i]));
+                        // console.log(forcasetList[i].regName, " 날씨  >>>  ", JSON.stringify(forcasetList[i]));
                         contHtml = `<div class ="label">
                                     <span class="left"></span>
                                     <div style='background-image:url("${require("@/assets/img/btn-marker-weather.png")}");background-size:55px auto;width:55px;height:55px;padding-top:4px;background-repeat:no-repeat;position:relative;text-align:center;'>
@@ -152,7 +145,7 @@ export default {
                 for(var i=0; i< this.weatherData.length; i++){
                     var _obj = this.markerPosition.find(x => x.name == this.weatherData[i].stnName);
                     if(_obj != undefined){  
-                        console.log("있어영!!! ", JSON.stringify(this.weatherData[i]));
+                        // console.log(forcasetList[i].regName, " 날씨  >>>  ", JSON.stringify(forcasetList[i]));
                         contHtml = `<div class ="label">
                                     <span class="left"></span>
                                     <div style='background-image:url("${require("@/assets/img/btn-marker-weather.png")}");background-size:55px auto;width:55px;height:55px;padding-top:4px;background-repeat:no-repeat;position:relative;text-align:center;'>
@@ -173,7 +166,7 @@ export default {
                 for(var i=0; i< this.weatherData.length; i++){
                     var _obj = this.markerPosition.find(x => x.name == this.weatherData[i].stnName);
                     if(_obj != undefined){  
-                        console.log("있어영!!! ", JSON.stringify(this.weatherData[i]));
+                        // console.log(forcasetList[i].regName, " 날씨  >>>  ", JSON.stringify(forcasetList[i]));
                         contHtml = `<div class ="label">
                                     <span class="left"></span>
                                     <div style='background-image:url("${require("@/assets/img/btn-marker-weather.png")}");background-size:55px auto;width:55px;height:55px;padding-top:4px;background-repeat:no-repeat;position:relative;text-align:center;'>
@@ -202,7 +195,7 @@ export default {
                 for(var i=0; i< this.weatherData.length; i++){
                     var _obj = this.markerPosition.find(x => x.name == this.weatherData[i].stnName);
                     if(_obj != undefined){  
-                        console.log("있어영!!! ", JSON.stringify(this.weatherData[i]));
+                        // console.log(forcasetList[i].regName, " 날씨  >>>  ", JSON.stringify(forcasetList[i]));
                         contHtml = `<div class ="label">
                                     <span class="left"></span>
                                     <div style='background-image:url("${require("@/assets/img/btn-marker-weather.png")}");background-size:55px auto;width:55px;height:55px;padding-top:4px;background-repeat:no-repeat;position:relative;text-align:center;'>
@@ -224,7 +217,7 @@ export default {
                 for(var i=0; i< this.weatherData.length; i++){
                     var _obj = this.markerPosition.find(x => x.name == this.weatherData[i].stnName);
                     if(_obj != undefined){  
-                        console.log("있어영!!! ", JSON.stringify(this.weatherData[i]));
+                        // console.log(forcasetList[i].regName, " 날씨  >>>  ", JSON.stringify(forcasetList[i]));
                         contHtml = `<div class ="label">
                                     <span class="left"></span>
                                     <div style='background-image:url("${require("@/assets/img/btn-marker-weather.png")}");background-size:55px auto;width:55px;height:55px;padding-top:4px;background-repeat:no-repeat;position:relative;text-align:center;'>
@@ -257,7 +250,7 @@ export default {
                                 <span class="left"></span>
                                 <div style='background-image:url("${require("@/assets/img/btn-marker-weather.png")}");background-size:55px auto;width:55px;height:55px;padding-top:4px;background-repeat:no-repeat;position:relative;text-align:center;'>
                                     <span style="font-size:7px;position:fixed;margin-left:-10px;">${forcasetList[i].regName}</span>
-                                    <img src="${require("@/assets/img/main/ic-"+ forcasetList[i].wfIcon.toLowerCase() +".png")}" style="width:22px;height:22px;position:fixed;padding-top:14px;margin-left:-10px;">
+                                    <img src="${require("@/assets/img/main/ic-"+ forcasetList[i].wfIcon.toLowerCase() +".png")}" style="width:25px;height:25px;position:fixed;padding-top:18px;margin-left:-12px;">
                                 </div>
                                 <span class="right"></span>
                             </div>`;
@@ -269,6 +262,13 @@ export default {
                     });
                 }
             }
+        }
+    },
+    watch : {
+        cateIndex : function(){ 
+            // cateIndex가 변경되는 시점
+            console.log("cateIndex    >>>   ", this.cateIndex);
+            this.initMap();
         }
     }
 };

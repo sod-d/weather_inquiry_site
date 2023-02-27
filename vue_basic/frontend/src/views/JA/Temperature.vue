@@ -7,9 +7,12 @@
 		</div>
 
 		<div class="cate-wrap">
-			<button class="btn-tab" v-for="(category, index) in categories" :key="category.item"
-				v-bind:class="{on: currentCate === index}"
-				v-on:click="clickCategory(index)" v-html="category"></button>
+			<swiper :options="swiperOption">
+				<swiper-slide v-for="(category, index) in categories" class="post" :key="category.item">
+					<button class="btn-tab" v-bind:class="{on: currentCate === index}" v-on:click="clickCategory(index)" 
+						v-html="category"></button>
+				</swiper-slide>
+			</swiper>
 		</div>
 
 		<kakao-map class="map-cont" v-if="weatherDataFlag == true" 
@@ -19,7 +22,11 @@
 			<div v-if="currentTab === 2">
 				<span class="title05">통보문 다운로드</span>
 				<p class="file-txt">※ 원하시는 지역을 선택하여 통보문을 다운받으실 수  있습니다.</p>
-				<select value="전국"></select>
+				<select name="region" class="sel-full">
+					<option value="전국" selected="selected">전국</option>
+					<option value="경기">경기</option>
+					<option value="경북/대구">경북/대구</option>
+				</select>
 				<br>
 				<button class="btn-btm-txt">다운로드</button>
 			</div>
@@ -30,11 +37,15 @@
 <script>
 import Header from "../../components/layout/Header.vue";
 import KakaoMap from "./KakaoMap.vue";
+import { Swiper, SwiperSlide } from "vue-awesome-swiper";
+import "swiper/css/swiper.css";
 
 export default {
 	name: "Temperature",
 	components: {
 		KakaoMap,
+		Swiper,
+		SwiperSlide,
 	},
 	props: {
 	},
@@ -46,6 +57,11 @@ export default {
 			currentCate : 0,
 			currentTab : 1,
 			weatherDataFlag : false,
+			swiperOption: {
+				slidesPerView: 3, 
+				// spaceBetween: 0, 
+				loop: false, 
+			},
 		};
 	},
 	created() {
@@ -56,7 +72,7 @@ export default {
 
 		// 시점 탭에 따른 카테고리 변경 - default : 현재
 		this.categories = ["날씨", "강수", "바람"];
-		
+
 	},	
 	methods: {
 		async getCurrentWeather(){
@@ -69,9 +85,9 @@ export default {
 
 			this.weatherDataList = await rst.currentWeather;
 			this.currentWeatherTm = await rst.currentWeatherTm;
-			this.weatherDataFlag = await true;
+			this.clickCategory(0);		// category 인덱스 강제로 0
 
-			console.log("getCurrentWeather 메소드 호출 !!!  ",this.weatherDataList);
+			// console.log("getCurrentWeather 메소드 호출 !!!  ",this.weatherDataList);
 			
 		},
 		async getYesterdayWeather(){
@@ -84,9 +100,9 @@ export default {
 
 			this.weatherDataList = await rst.yesterdayWeather;
 			this.currentWeatherTm = "";
-			this.weatherDataFlag = await true;
+			this.clickCategory(0);		// category 인덱스 강제로 0
 
-			console.log("getYesterdayWeather 메소드 호출 !!!  ",this.weatherDataList);
+			// console.log("getYesterdayWeather 메소드 호출 !!!  ",this.weatherDataList);
 			
 		},
 		async getForecastWeather(){
@@ -103,49 +119,42 @@ export default {
 			await this.weatherDataList.forEach(item => {
 				this.categories.push(item.date+ "<br>" + item.ampm );
 			});
-			console.log("this.categorie    : ",this.categories);
 			await this.clickCategory(0);		// category 인덱스 강제로 0
 
-			this.weatherDataFlag = await true;
-
-			console.log("getForecastWeather 메소드 호출 !!!  ",this.weatherDataList);
+			// console.log("getForecastWeather 메소드 호출 !!!  ",this.weatherDataList);
 		},
 		clickTab(idx) {
+			this.currentTab = idx;
+
+			this.weatherDataFlag = false;
+			
 			if(idx == 0){
 				this.categories = ["기온", "강수"];
-				this.clickCategory(0);		// category 인덱스 강제로 0
+				this.getYesterdayWeather();
 			}else if(idx == 1){
 				this.categories = ["날씨", "강수", "바람"];
-				this.clickCategory(0);		// category 인덱스 강제로 0
+				this.getCurrentWeather();
 			}else if(idx == 2){
 				this.categories = [];
 				this.getForecastWeather();
 			}
-			
-			this.currentTab = idx;
 
 			const el = document.getElementsByClassName("tab-wrap")[0];
 			el.querySelector(".on").classList.remove("on");
 			el.childNodes[idx].classList.add("on");
 		},
 		clickCategory(idx){
-			this.weatherDataFlag = false;
+			
 			this.currentCate = idx;
 
 			const el = document.getElementsByClassName("cate-wrap")[0];
-			el.querySelector(".on").classList.remove("on");
-			el.childNodes[idx].classList.add("on");
-			
-			if(this.currentTab == 0){	
-				this.getYesterdayWeather();
-			}else if(this.currentTab == 1){
-				this.getCurrentWeather();
-			}else if(this.currentTab == 2){
-				this.weatherDataFlag = true;
+			if(el.querySelector(".on") != null){
+				el.querySelector(".on").classList.remove("on");
 			}
+			el.querySelectorAll(".btn-tab")[idx].classList.add("on");
+			
+			this.weatherDataFlag = true;
 		},
-	},
-	watch: {	// data가 변경되는 시점
 	},
 	mounted() {
 		
@@ -162,7 +171,7 @@ export default {
 }
 .tab-wrap{
 	display: block;
-    width: 100%;
+    /* width: 100%; */
     height: 3.5rem;
     font-size: 0;
     padding: 0 2rem;
@@ -202,7 +211,7 @@ export default {
     height: auto;
 	position: relative;
     display: block;
-    width: 100%;
+    /* width: 100%; */
     height: 4.1rem;
     font-size: 0;
 }
@@ -245,5 +254,8 @@ export default {
     width: 100%;
 	margin-top :15px;
 }
-
+.sel-full {
+	width: 98%;
+    height: 25px;
+}
 </style>
