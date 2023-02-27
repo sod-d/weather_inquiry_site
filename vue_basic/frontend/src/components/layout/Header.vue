@@ -1,6 +1,7 @@
 <template>
   <div class="header">
       <header>
+
           <button type="button" class="btn-last menu" @click="isSideMenuOn = true">메뉴</button>
           <!-- <button type="button" class="btn-last close">닫기</button> -->
       </header>
@@ -22,6 +23,7 @@ export default {
   data() {
     return {
       isSideMenuOn: false,
+      title : "",
     };
   },
   methods: {
