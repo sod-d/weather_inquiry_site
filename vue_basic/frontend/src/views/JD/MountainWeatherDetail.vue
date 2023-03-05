@@ -2,8 +2,6 @@
 	<div>
 		<el-collapse v-model="detailActiveNm" @change="toggleDetailData" v-if="selectDetailData" accordion>
 			<el-collapse-item :title="`${dailyItem.dateLabel}(${dailyItem.date})`" :name="`${index}`"  v-for="(dailyItem,index) in selectDetailData.forecast.dailyItems" :key="index">
-				<el-button type="text" icon="el-icon-top">최저 : {{ dailyItem.minTemp }}</el-button>
-				<el-button type="text" icon="el-icon-bottom">최고 : {{ dailyItem.maxTemp }}</el-button>
 				<div v-for="(item, index2) in dailyItem.items" :key="index2" style="padding:5px">
 					<el-descriptions :title="`${ item.time }`" border>
 						<el-descriptions-item label="온도">{{ item.tempValue }}°C</el-descriptions-item>

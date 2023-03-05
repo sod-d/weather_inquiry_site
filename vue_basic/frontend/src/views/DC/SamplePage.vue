@@ -8,6 +8,9 @@
     <button @click="callCommonUtil">공통함수 호출</button><br/><br/>
     <button @click="openComponent">자식으로 데이터 전달</button><br/><br/>
     <child-component v-if="openActive" @close="openActive = false, testData = 0" :sendData=testData></child-component>
+  
+    <button @click="callAPITest">api test</button>
+    <img src="http://www.e-stc.or.kr/upload/tbl_play_place/251_2.jpg">
   </div>
    
 </template>
@@ -77,6 +80,15 @@ export default {
     openComponent(){
       this.openActive = true;
       this.testData += 1;
+    },
+
+    async callAPITest(){
+      let rst = await this.$MNetSend({
+				url: `http://api.kcisa.kr/openapi/service/CNV/API_CNV_043/request?serviceKey=5b6d4464-69e0-40ae-88c1-84158f043867&numOfRows=10&pageNo=1`,
+			});
+
+			console.log(rst);
+      
     }
 
   },
