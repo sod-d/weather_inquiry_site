@@ -80,6 +80,7 @@
 					</div>
 					<!-- //대기질정보 -->
 					<!-- 단기예보 -->
+
 					<!-- //단기예보 -->
 
 
@@ -183,38 +184,46 @@ export default {
 			let rst = await this.$MNetSend({
 				url: `w/rest/zone/find/dong.do?x=1&y=1&lat=${latitude}&lon=${longitude}`,
 			
-		});
-		console.log(rst);
-		this.dongCode = rst[0].code;
-		this.getCurrentWeatherPost(this.dongCode);
+			});
+			console.log(rst);
+			this.dongCode = rst[0].code;
+			this.getCurrentWeatherPost(this.dongCode);
     	},
+		async getCurrentWeatherPost(dongCode){
+				let rst = await this.$MNetSend({
+					// url: 'pushwidgetapi/wnuri-fct2021/api/main/current-weather-array.do?code=4121063300&unit=m/s',
+					url: `pushwidgetapi/wnuri-fct2021/api/main/current-weather-array.do?code=${dongCode}&unit=m/s`,
+				});
+			console.log(rst);
+			this.crurentWeatherList = rst[dongCode];
+			this.AirValueList = rst[dongCode].airValue;
+			if(rst[dongCode].compToYesterdayTmp > -100 && rst[dongCode].compToYesterdayTmp > 0){
+				this.compareTxt = "어제보다 " + rst[dongCode].compToYesterdayTmp + "℃ 높아요";
+			}else if(rst[dongCode].compToYesterdayTmp > -100 && rst[dongCode].compToYesterdayTmp < 0){
+				this.compareTxt = "어제보다 " + (rst[dongCode].compToYesterdayTmp * -1 )+ "℃ 낮아요";  // '-' 출력 제외
+			}else if(rst[dongCode].compToYesterdayTmp > -100){
+				this.compareTxt = "어제와 기온이 같아요";
+			}else{
+				this.compareTxt = "-";
+			}
+
+			var airDataTime = rst[dongCode].airDataTime.split(" ")[1].split(":")[0];
+			if(airDataTime > 17){ // 17시 이후일 경우 저녁
+				this.backgroundClass = 'night'
+			}else{
+				this.backgroundClass = 'day'	
+			}
+    	},
+		//글피 등등 정보 출력
+		// https://pushappintro.kma.go.kr/pushwidgetapi/wnuri-fct2021/api/main/digital-forecast-array.do?code=1168058000&hr1=Y&unit=m/s
 		async getCurrentWeatherPost(dongCode){
 			let rst = await this.$MNetSend({
 				// url: 'pushwidgetapi/wnuri-fct2021/api/main/current-weather-array.do?code=4121063300&unit=m/s',
-				url: `pushwidgetapi/wnuri-fct2021/api/main/current-weather-array.do?code=${dongCode}&unit=m/s`,
-			
-		});
-		console.log(rst);
-		this.crurentWeatherList = rst[dongCode];
-		this.AirValueList = rst[dongCode].airValue;
-		if(rst[dongCode].compToYesterdayTmp > -100 && rst[dongCode].compToYesterdayTmp > 0){
-			this.compareTxt = "어제보다 " + rst[dongCode].compToYesterdayTmp + "℃ 높아요";
-		}else if(rst[dongCode].compToYesterdayTmp > -100 && rst[dongCode].compToYesterdayTmp < 0){
-			this.compareTxt = "어제보다 " + (rst[dongCode].compToYesterdayTmp * -1 )+ "℃ 낮아요";  // '-' 출력 제외
-		}else if(rst[dongCode].compToYesterdayTmp > -100){
-			this.compareTxt = "어제와 기온이 같아요";
-		}else{
-			this.compareTxt = "-";
-		}
-
-		var airDataTime = rst[dongCode].airDataTime.split(" ")[1].split(":")[0];
-		if(airDataTime > 17){ // 17시 이후일 경우 저녁
-			this.backgroundClass = 'night'
-		}else{
-			this.backgroundClass = 'day'	
-		}
-
-    	},
+				url : `pushwidgetapi/wnuri-fct2021/api/main/digital-forecast-array.do?code=${dongCode}&hr1=Y&unit=m/s`,
+			});
+			console.log("pushwidgetapi/wnuri-fct2021/api/main/digital-forecast-array.do?code=${dongCode}&hr1=Y&unit=m/s");
+			console.log(rst);
+		},
 	}
 }
 </script>
