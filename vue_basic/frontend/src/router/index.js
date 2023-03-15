@@ -9,6 +9,7 @@ const Weather = () => import('../views/SY/Weather.vue');
 const Sky = () => import('../views/DC/SkyWeather.vue');
 const Sea = () => import('../views/DC/SeaWeather.vue');
 const Location = () => import('../views/HJ/Location.vue');
+// const SearchLocation = () => import('../views/HJ/SearchLoSearchLocationcation.vue');
 const Temperature = () => import('../views/JA/Temperature.vue');
 const Mountain = () => import('../views/JD/MountainWeather.vue');
 
@@ -70,6 +71,15 @@ const router = new Router({
         className: "dashboard",
       },
     },
+    // {
+    //   path: "/searchLocation",
+    //   name: "지역검색",
+    //   component: SearchLocation,
+    //   meta: {
+    //     layout: Define.LAYOUT_TYPE.DEFAULT,
+    //     className: "dashboard",
+    //   },
+    // },
     {
       path: "/tempe",
       name: "전국 온도/강수",
